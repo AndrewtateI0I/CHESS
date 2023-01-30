@@ -1,0 +1,32 @@
+class ChessPiece:
+    def __init__(self, color, position):
+        self.color = color
+        self.position = position
+
+class Pawn(ChessPiece):
+    def can_move(self, new_position):
+        if self.color == "white":
+            return new_position[1] == self.position[1] + 1
+        else:
+            return new_position[1] == self.position[1] - 1
+
+class ChessGame:
+    def __init__(self):
+        self.board = [[None for _ in range(8)] for _ in range(8)]
+        self.white_pieces = []
+        self.black_pieces = []
+
+    def add_piece(self, piece, position):
+        self.board[position[0]][position[1]] = piece
+        if piece.color == "white":
+            self.white_pieces.append(piece)
+        else:
+            self.black_pieces.append(piece)
+
+    def move_piece(self, piece, new_position):
+        if not piece.can_move(new_position):
+            raise ValueError("Invalid move")
+        self.board[piece.position[0]][piece.position[1]] = None
+        self.board[new_position[0]][new_position[1]] = piece
+        piece.position = new_position
+
